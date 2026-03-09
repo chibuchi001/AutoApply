@@ -1,12 +1,29 @@
-# AutoApply — AI-Powered Job Application Agent
+<div align="center">
 
-> **Amazon Nova Hackathon Submission** · Categories: UI Automation + Agentic AI · Voice AI
+# AutoApply
+### AI-Powered Job Application Agent
+
+*Amazon Nova Hackathon 2026 Submission*
+
+[![Nova Act](https://img.shields.io/badge/Amazon-Nova%20Act-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://nova.amazon.com)
+[![Nova 2 Lite](https://img.shields.io/badge/Amazon-Nova%202%20Lite-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/bedrock)
+[![Nova 2 Sonic](https://img.shields.io/badge/Amazon-Nova%202%20Sonic-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/bedrock)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+**Categories:** UI Automation · Agentic AI · Voice AI
+
+Upload your resume. Sign in. Let the agents apply while you practice for the interview.
+
+</div>
+
+---
 
 AutoApply is an AI agent fleet that automates end-to-end job applications across multiple job boards, coaches candidates through voice interview prep with Amazon Nova 2 Sonic, and uses Nova 2 Lite to provide intelligent job matching and skill gap coaching.
 
-Upload your resume. Sign in with Google, Amazon, Apple, or Facebook. Let the agents apply while you practice for the interview.
-
-**Built with:** Amazon Nova Act · Amazon Nova 2 Lite (Bedrock) · Amazon Nova 2 Sonic (Bedrock) · FastAPI · Next.js · NextAuth.js
+> 🌍 **Built for the pan-African tech community** — giving every developer in Lagos, Nairobi, and Accra the same tools as candidates in San Francisco.
 
 ---
 
@@ -31,7 +48,7 @@ Upload your resume. Sign in with Google, Amazon, Apple, or Facebook. Let the age
 |---|---|
 | **Social Sign-In** | NextAuth — Google, Amazon, Apple, Facebook OAuth |
 | **Multi-board parallel search** | Nova Act — 3 job boards via Python threading |
-| **Intelligent job matching** | Nova 2 Lite + extended thinking — 0–100 match score |
+| **Intelligent job matching** | Nova 2 Lite — structured prompt analysis, 0–100 match score |
 | **Skill gap coaching** | Nova 2 Lite — reframes existing experience for missing requirements |
 | **Tailored cover letters** | Nova 2 Lite — company-specific, cliché-free |
 | **Automated form filling** | Nova Act — handles diverse layouts, file uploads, screening Q&A |
@@ -90,7 +107,7 @@ Upload your resume. Sign in with Google, Amazon, Apple, or Facebook. Let the age
 | Service | Purpose |
 |---|---|
 | **Amazon Nova Act** | Browser automation — job search and form submission |
-| **Amazon Nova 2 Lite** | Resume parsing, job matching (extended thinking), cover letters |
+| **Amazon Nova 2 Lite** | Resume parsing, job matching, cover letters |
 | **Amazon Nova 2 Sonic** | Bidirectional voice interview coaching |
 | **Amazon Bedrock** | Inference API for Nova 2 Lite and Nova 2 Sonic |
 | **Amazon S3** | Resume and cover letter storage |
@@ -293,229 +310,4 @@ MIT — free to use, adapt, and build upon.
 
 ---
 
-*#AmazonNova · Amazon Nova Hackathon 2025*
-
-
----
-
-## Demo
-
-> 🎥 [Demo Video — 3 minutes] (link to video)
-
-**What the demo shows:**
-- Resume upload → Nova 2 Lite parses and extracts structured data
-- Live split-screen of Nova Act agents searching Indeed, LinkedIn, Glassdoor simultaneously
-- Match scores and skill gap coaching populating in real time
-- Nova Act filling out a real job application form
-- Application tracker dashboard with confirmation
-
----
-
-## Features
-
-- **Multi-board parallel search** — Nova Act searches 3 job boards simultaneously via Python threading
-- **Intelligent matching** — Nova 2 Lite with extended thinking scores resume-to-job fit (0-100)
-- **Skill gap coaching** — AI explains how to reframe existing experience for missing requirements
-- **Tailored cover letters** — Non-generic, company-specific letters generated per application
-- **Automated form filling** — Nova Act handles diverse form layouts, file uploads, screening questions
-- **Human-in-the-loop** — CAPTCHA escalation, review-before-submit toggle for high-value applications
-- **Real-time agent view** — WebSocket feed shows exactly what the agent is doing, live
-- **Application tracker** — Dashboard with status, match scores, confirmation numbers
-
----
-
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────┐
-│  FRONTEND (Next.js + Tailwind)                      │
-│  Resume Upload · Preferences · Live Agent View      │
-│  Application Dashboard · Match Scores               │
-└──────────────────────┬──────────────────────────────┘
-                       │ REST + WebSocket
-┌──────────────────────▼──────────────────────────────┐
-│  BACKEND (FastAPI + Python)                         │
-│                                                     │
-│  ┌──────────────────────────────────────────────┐  │
-│  │  ORCHESTRATOR                                │  │
-│  │  Manages sessions, queuing, WS notifications │  │
-│  └──────┬─────────────────────┬────────────────┘  │
-│         │                     │                    │
-│  ┌──────▼──────┐    ┌─────────▼───────────────┐   │
-│  │ NOVA 2 LITE │    │     NOVA ACT AGENTS      │   │
-│  │ (Bedrock)   │    │  Parallel browser fleet  │   │
-│  │             │    │  Indeed + LinkedIn +     │   │
-│  │ • Resume    │    │  Glassdoor               │   │
-│  │   parsing   │    │                          │   │
-│  │ • Matching  │    │ • Search jobs            │   │
-│  │ • Gap coach │    │ • Fill forms             │   │
-│  │ • Cover     │    │ • Upload resume          │   │
-│  │   letters   │    │ • Answer questions       │   │
-│  │ • Screening │    │ • Submit / confirm       │   │
-│  └─────────────┘    └──────────────────────────┘   │
-│                                                     │
-│  PostgreSQL · S3 (resumes) · In-memory queue       │
-└─────────────────────────────────────────────────────┘
-```
-
----
-
-## AWS Services Used
-
-| Service | Purpose |
-|---------|---------|
-| **Nova Act** | Browser automation — job search and application submission |
-| **Nova 2 Lite (Bedrock)** | Resume parsing, job matching with extended thinking, cover letter generation |
-| **S3** | Resume and cover letter storage |
-| **Amazon Bedrock** | API gateway for Nova 2 Lite inference |
-
----
-
-## Quick Start
-
-### Prerequisites
-- Python 3.11+
-- Node.js 18+
-- PostgreSQL (or SQLite for testing)
-- Nova Act API key → [nova.amazon.com](https://nova.amazon.com)
-- AWS credentials with Bedrock access to `us.amazon.nova-2-lite-v1:0`
-
-### Backend Setup
-
-```bash
-cd backend
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-# Edit .env and fill in:
-# NOVA_ACT_API_KEY=your_key
-# AWS_ACCESS_KEY_ID=your_key
-# AWS_SECRET_ACCESS_KEY=your_secret
-# DATABASE_URL=postgresql+asyncpg://...
-
-# Start backend
-uvicorn main:app --reload --port 8000
-```
-
-### Frontend Setup
-
-```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Configure
-echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
-
-# Start frontend
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
-### Test without API keys
-
-Both Nova Act and Bedrock have graceful fallbacks to mock data. Set environment variables to empty strings and the app will use realistic mock job listings and simulated match scores — useful for UI development.
-
----
-
-## Project Structure
-
-```
-autoapply/
-├── backend/
-│   ├── main.py                    # FastAPI app + all routes
-│   ├── config.py                  # Settings from .env
-│   ├── agents/
-│   │   ├── job_searcher.py        # Nova Act: parallel job search
-│   │   └── application_agent.py   # Nova Act: form filling + submission
-│   ├── services/
-│   │   ├── resume_parser.py       # PDF → text → Nova 2 Lite structured data
-│   │   ├── job_matcher.py         # Match scoring, gap coaching, cover letters
-│   │   └── orchestrator.py        # Full pipeline coordinator
-│   ├── api/
-│   │   └── websocket_manager.py   # Real-time WebSocket updates
-│   └── db/
-│       └── models.py              # SQLAlchemy models
-├── frontend/
-│   └── src/
-│       ├── app/
-│       │   └── page.tsx           # Main dashboard UI
-│       ├── hooks/
-│       │   └── useAgentWebSocket.ts
-│       ├── lib/
-│       │   └── api.ts             # API client
-│       └── types/
-│           └── index.ts
-└── docs/
-    ├── blog-post.md               # builder.aws.com blog post
-    └── demo-script.md             # 3-minute demo video script
-```
-
----
-
-## Nova Act Usage Highlights
-
-This project demonstrates advanced Nova Act patterns:
-
-**Atomic act() calls** for reliability:
-```python
-nova.act("Find and click the 'Apply' button")
-nova.act(f"Fill the name field with '{name}'")
-nova.act("Check if there is a cover letter text field")
-```
-
-**Pydantic schema extraction** for structured data:
-```python
-result = nova.act(
-    "Extract job title, company, location, requirements for first 10 listings",
-    schema=JobResults.model_json_schema()
-)
-jobs = JobResults.model_validate_json(result.parsed_response)
-```
-
-**Playwright interop** for reliable file uploads:
-```python
-nova.page.set_input_files('input[type="file"]', resume_path)
-```
-
-**Human escalation** via devtools URL:
-```python
-if captcha_detected:
-    return {"requires_human": True, "devtools_url": nova.devtools_frontend_url}
-```
-
-**Parallel sessions** via Python threading:
-```python
-for platform in platforms:
-    t = threading.Thread(target=search_jobs_on_platform, args=(platform, ...))
-    t.start()
-```
-
----
-
-## The Problem We're Solving
-
-Job seekers in emerging markets face a structural disadvantage: the mechanics of job hunting are time-intensive, and candidates in major tech hubs have more time and tools to navigate the process. A developer in Lagos with identical skills to one in San Francisco shouldn't lose opportunities simply because they can't afford to spend 40 hours a week on applications.
-
-AutoApply levels that playing field. Read the full story in our [blog post](docs/blog-post.md).
-
----
-
-## License
-
-MIT — free to use, adapt, and build upon.
-
----
-
-*#AmazonNova · Amazon Nova Hackathon 2025*
-#   A u t o A p p l y  
- 
+*#AmazonNova · Amazon Nova Hackathon 2026*
