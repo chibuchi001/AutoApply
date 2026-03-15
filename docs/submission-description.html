@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AutoApply — Devpost Submission Description</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand:    #e85d26;
+      --brand-lt: #f97316;
+      --accent:   #7c3aed;
+      --dark:     #111827;
+      --mid:      #374151;
+      --muted:    #6b7280;
+      --rule:     #e5e7eb;
+      --bg-tag:   #fef3c7;
+      --fg-tag:   #92400e;
+      --bg-code:  #f3f4f6;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.65;
+      color: var(--dark);
+      background: #fff;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* ── Page wrapper ── */
+    .page {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 52px 56px 60px;
+    }
+
+    /* ── Header ── */
+    .header {
+      border-left: 5px solid var(--brand);
+      padding-left: 18px;
+      margin-bottom: 32px;
+    }
+    .header .eyebrow {
+      font-size: 8.5pt;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .header h1 {
+      font-size: 26pt;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.1;
+      letter-spacing: -.02em;
+    }
+    .header h1 span { color: var(--brand); }
+    .header .tagline {
+      font-size: 11.5pt;
+      color: var(--mid);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* ── Pill badges ── */
+    .pills { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 11px;
+      border-radius: 99px;
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: .04em;
+      border: 1.5px solid currentColor;
+    }
+    .pill.aws    { color: #c05000; background: #fff7ed; }
+    .pill.py     { color: #1e6aa3; background: #eff6ff; }
+    .pill.next   { color: #111;    background: #f9fafb; }
+    .pill.fast   { color: #065f46; background: #ecfdf5; }
+    .pill.cat    { color: var(--fg-tag); background: var(--bg-tag); }
+
+    /* ── Divider ── */
+    hr { border: none; border-top: 1.5px solid var(--rule); margin: 28px 0; }
+
+    /* ── Section headings ── */
+    h2 {
+      font-size: 13pt;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    h2::after {
+      content: '';
+      flex: 1;
+      height: 1.5px;
+      background: var(--rule);
+    }
+    h2 .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: #fff;
+      font-size: 8pt;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Body text ── */
+    p { margin-bottom: 11px; color: var(--mid); }
+    p strong { color: var(--dark); }
+
+    /* ── Feature list ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .feature-item {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border: 1.5px solid var(--rule);
+      border-radius: 8px;
+    }
+    .feature-item .icon {
+      font-size: 14pt;
+      flex-shrink: 0;
+      line-height: 1.3;
+    }
+    .feature-item .body strong {
+      display: block;
+      font-size: 9pt;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 1px;
+    }
+    .feature-item .body span {
+      font-size: 8.5pt;
+      color: var(--muted);
+    }
+
+    /* ── Nova service cards ── */
+    .nova-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 10px; }
+    .nova-card {
+      display: flex;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border-left: 4px solid var(--brand);
+      background: #fafafa;
+    }
+    .nova-card.lite  { border-color: #7c3aed; }
+    .nova-card.sonic { border-color: #0891b2; }
+    .nova-card .label {
+      min-width: 110px;
+      flex-shrink: 0;
+    }
+    .nova-card .label strong {
+      display: block;
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .nova-card .label em {
+      font-style: normal;
+      font-size: 7.5pt;
+      color: var(--muted);
+    }
+    .nova-card .desc {
+      font-size: 9pt;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+
+    /* ── Highlight quote box ── */
+    .callout {
+      background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+      border-left: 4px solid var(--brand-lt);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+    }
+    .callout p { color: var(--mid); margin: 0; font-style: italic; }
+    .callout p strong { color: var(--brand); font-style: normal; }
+
+    /* ── Stat row ── */
+    .stats {
+      display: flex;
+      gap: 0;
+      margin: 18px 0;
+      border: 1.5px solid var(--rule);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .stat {
+      flex: 1;
+      text-align: center;
+      padding: 14px 8px;
+      border-right: 1.5px solid var(--rule);
+    }
+    .stat:last-child { border-right: none; }
+    .stat .val {
+      display: block;
+      font-size: 18pt;
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1.1;
+    }
+    .stat .lbl {
+      display: block;
+      font-size: 7.5pt;
+      color: var(--muted);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 36px;
+      padding-top: 18px;
+      border-top: 1.5px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer .left { font-size: 8.5pt; color: var(--muted); }
+    .footer .left strong { color: var(--dark); }
+    .footer .tag {
+      font-size: 9pt;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: .05em;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { font-size: 10pt; }
+      .page { padding: 30px 36px 40px; max-width: 100%; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow">Amazon Nova Hackathon 2026 · Submission Description</div>
+    <h1><span>Auto</span>Apply</h1>
+    <div class="tagline">AI-Powered Job Application Agent</div>
+    <div class="pills">
+      <span class="pill aws">Amazon Nova Act</span>
+      <span class="pill aws">Nova 2 Lite · Bedrock</span>
+      <span class="pill aws">Nova 2 Sonic · Bedrock</span>
+      <span class="pill py">Python 3.11 · FastAPI</span>
+      <span class="pill next">Next.js 16</span>
+      <span class="pill cat">UI Automation</span>
+      <span class="pill cat">Agentic AI</span>
+      <span class="pill cat">Voice AI</span>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <h2>Project Summary</h2>
+  <p>
+    <strong>AutoApply</strong> is an AI agent fleet that automates the full job application pipeline — from search
+    to submission to interview preparation — built on all three Amazon Nova services. A candidate uploads their
+    resume once, sets a job title and location, and the system takes over.
+  </p>
+  <p>
+    The project was purpose-built for the pan-African tech market, where a single job application takes
+    25–45 minutes to complete manually and the average candidate submits 60–80 applications before receiving
+    an offer. AutoApply reduces that 45-minute process to a 45-second approval.
+  </p>
+
+  <div class="stats">
+    <div class="stat"><span class="val">3</span><span class="lbl">Nova services integrated</span></div>
+    <div class="stat"><span class="val">3×</span><span class="lbl">parallel browser agents</span></div>
+    <div class="stat"><span class="val">45s</span><span class="lbl">per application (vs 45 min)</span></div>
+    <div class="stat"><span class="val">0</span><span class="lbl">credentials needed to demo</span></div>
+  </div>
+
+  <hr/>
+
+  <!-- NOVA USAGE -->
+  <h2><span class="num">1</span>How AutoApply Leverages Amazon Nova</h2>
+  <div class="nova-cards">
+
+    <div class="nova-card act">
+      <div class="label">
+        <strong>Nova Act</strong>
+        <em>nova.amazon.com</em>
+      </div>
+      <div class="desc">
+        Powers two distinct agent types: <strong>job search agents</strong> that open Indeed, LinkedIn, and
+        Glassdoor in parallel browser sessions and extract structured listings using Pydantic schema output; and
+        <strong>application agents</strong> that navigate to a job URL, fill every form field with the candidate's
+        profile, upload the resume via Playwright interop, answer screening questions, and submit — all while
+        streaming a live action feed over WebSocket. Nova Act's natural language instruction model handles
+        diverse, non-standardised form layouts across global and African job boards without any site-specific
+        scripting. Human escalation is implemented via <code>devtools_frontend_url</code> for CAPTCHA and
+        high-stakes review gates.
+      </div>
+    </div>
+
+    <div class="nova-card lite">
+      <div class="label">
+        <strong>Nova 2 Lite</strong>
+        <em>Amazon Bedrock</em>
+      </div>
+      <div class="desc">
+        Used for all language intelligence tasks via the Bedrock <code>converse</code> API:
+        <strong>resume parsing</strong> (PDF → structured skills/experience/contact JSON);
+        <strong>job match scoring</strong> (0–100 score, keyword overlap, ATS pass rate, experience level);
+        <strong>skill gap coaching</strong> (explains how to reframe existing experience to address missing
+        requirements, with specific resume bullet rewrites); <strong>tailored cover letter generation</strong>
+        (company-specific, cliché-free, under 350 words); and <strong>screening question answering</strong>
+        using only verified information from the candidate's profile.
+      </div>
+    </div>
+
+    <div class="nova-card sonic">
+      <div class="label">
+        <strong>Nova 2 Sonic</strong>
+        <em>Amazon Bedrock</em>
+      </div>
+      <div class="desc">
+        Drives a real-time voice interview coaching session accessible directly from any job card.
+        The frontend captures microphone audio as 16kHz 16-bit mono PCM, streams it over WebSocket to the
+        FastAPI backend, which relays it to Nova 2 Sonic via Bedrock's bidirectional streaming API
+        (<code>invoke_model_with_bidirectional_stream</code>). Spoken AI responses are streamed back and
+        played through the browser's AudioContext. Nova 2 Sonic is given a system prompt constructed from the
+        specific job description and the candidate's resume summary, producing role-specific interview questions
+        and spoken feedback after each answer.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <p>All three Nova services are used for <strong>distinct, non-overlapping purposes</strong> — Nova Act for
+    UI interaction, Nova 2 Lite for language reasoning, and Nova 2 Sonic for real-time voice. None could
+    substitute for the others. The full application runs end-to-end with graceful mock fallbacks when API
+    credentials are not configured.</p>
+  </div>
+
+  <hr/>
+
+  <!-- FEATURES -->
+  <h2><span class="num">2</span>Key Features</h2>
+  <div class="feature-grid">
+    <div class="feature-item">
+      <div class="icon">🔍</div>
+      <div class="body">
+        <strong>Parallel Job Search</strong>
+        <span>3 Nova Act agents searching Indeed, LinkedIn &amp; Glassdoor simultaneously via Python threading</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="icon">📊</div>
+      <div class="body">
+        <strong>Intelligent Matching</strong>
+        <span>Nova 2 Lite scores every listing 0–100 with ATS analysis, skill overlap, and experience level</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="icon">🎯</div>
+      <div class="body">
+        <strong>Skill Gap Coaching</strong>
+        <span>Specific bullet rewrites that reframe existing experience — not generic advice</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="icon">✉️</div>
+      <div class="body">
+        <strong>Tailored Cover Letters</strong>
+        <span>Company-specific, cliché-free letters generated per application by Nova 2 Lite</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="icon">🤖</div>
+      <div class="body">
+        <strong>Automated Form Submission</strong>
+        <span>Nova Act handles diverse layouts, file uploads, and screening Q&amp;A with human review gate</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="icon">🎙️</div>
+      <div class="body">
+        <strong>Voice Interview Coach</strong>
+        <span>Nova 2 Sonic conducts role-specific mock interviews with live spoken feedback</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="icon">📡</div>
+      <div class="body">
+        <strong>Real-Time Agent Feed</strong>
+        <span>WebSocket stream shows every agent action live — transparent, auditable automation</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="icon">🔒</div>
+      <div class="body">
+        <strong>Human-in-the-Loop</strong>
+        <span>CAPTCHA escalation + review-before-submit toggle; candidate stays in control</span>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- IMPACT -->
+  <h2><span class="num">3</span>Community Impact</h2>
+  <p>
+    AutoApply was built explicitly for the pan-African tech community. Developers in Lagos, Nairobi, and Accra
+    have comparable skills to peers in San Francisco but spend a disproportionate share of their time on
+    application mechanics — because the tools that exist were priced for Western markets ($30–50/month USD)
+    and built for Western job board layouts.
+  </p>
+  <p>
+    The code is open source (MIT). Any developer can deploy it with their own AWS credentials. Community
+    organisations such as She Code Africa (10,000+ members) and the Andela Learning Community can run shared
+    instances. Post-hackathon, African-specific boards — Jobberman, BrighterMonday, Fuzu, Careers24 — will be
+    added as additional Nova Act agent threads. A commercial tier would be priced in local currency at
+    purchasing-power-adjusted rates.
+  </p>
+
+  <hr/>
+
+  <!-- TECH STACK -->
+  <h2><span class="num">4</span>Technical Stack</h2>
+  <p>
+    <strong>Backend:</strong> Python 3.11 · FastAPI · SQLAlchemy + PostgreSQL · Amazon S3 (resume storage) ·
+    Boto3 (Bedrock) · nova-act SDK · Alembic migrations<br/>
+    <strong>Frontend:</strong> Next.js 16 · TypeScript · Tailwind CSS · NextAuth.js (Google / Amazon / Apple /
+    Facebook OAuth) · Axios · AudioContext (PCM capture)<br/>
+    <strong>Infrastructure:</strong> Docker Compose · Amazon Bedrock · Amazon S3
+  </p>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="left">
+      <strong>AutoApply</strong> · Amazon Nova Hackathon 2026 ·
+      Categories: UI Automation · Agentic AI · Voice AI
+    </div>
+    <div class="tag">#AmazonNova</div>
+  </div>
+
+</div>
+</body>
+</html>

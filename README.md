@@ -15,7 +15,7 @@
 
 **Categories:** UI Automation · Agentic AI · Voice AI
 
-Upload your resume. Sign in. Let the agents apply while you practice for the interview.
+Upload your resume. Set your preferences. Let the agents apply while you practice for the interview.
 
 </div>
 
@@ -32,13 +32,14 @@ AutoApply is an AI agent fleet that automates end-to-end job applications across
 > 🎥 [Demo Video — 3 minutes] *(link to video)*
 
 **What the demo shows:**
-1. OAuth sign-in (Google / Amazon / Apple / Facebook) — one click, no form
-2. Resume upload → Nova 2 Lite extracts 12+ skills, years of experience, certifications
-3. Live agent feed: three Nova Act browser sessions searching Indeed, LinkedIn, Glassdoor in parallel
+1. Profile creation and resume upload
+2. Resume parsing → Nova 2 Lite extracts 34 skills, years of experience, education
+3. Live agent feed: Nova Act browser sessions searching job boards in real time
 4. Match scores + AI skill gap coaching populating in real time
-5. Nova Act filling and submitting a real job application form
-6. Voice interview coaching with Nova 2 Sonic — live spoken feedback
-7. Application tracker dashboard with confirmation numbers
+5. Tailored cover letters generated for each matched job
+6. One-click apply with Nova Act — automated form filling with human escalation for CAPTCHAs
+7. Voice interview coaching with Nova 2 Sonic — job-tailored mock interviews with spoken feedback
+8. Application tracker dashboard with status tracking
 
 ---
 
@@ -46,16 +47,17 @@ AutoApply is an AI agent fleet that automates end-to-end job applications across
 
 | Feature | Technology |
 |---|---|
-| **Social Sign-In** | NextAuth — Google, Amazon, Apple, Facebook OAuth |
-| **Multi-board parallel search** | Nova Act — 3 job boards via Python threading |
+| **Profile setup** | Manual entry with OAuth-ready architecture (Google, Amazon, Apple, Facebook) |
+| **Multi-board parallel search** | Nova Act — Indeed, LinkedIn, Glassdoor via Python threading |
 | **Intelligent job matching** | Nova 2 Lite — structured prompt analysis, 0–100 match score |
 | **Skill gap coaching** | Nova 2 Lite — reframes existing experience for missing requirements |
-| **Tailored cover letters** | Nova 2 Lite — company-specific, cliché-free |
+| **Tailored cover letters** | Nova 2 Lite — company-specific, cliché-free, auto-generated per job |
 | **Automated form filling** | Nova Act — handles diverse layouts, file uploads, screening Q&A |
 | **Voice interview coaching** | Nova 2 Sonic — bidirectional 16kHz PCM voice, live AI interviewer |
-| **Human-in-the-loop** | CAPTCHA escalation + review-before-submit toggle |
+| **Human-in-the-loop** | CAPTCHA escalation + review-before-submit toggle + dry-run mode |
 | **Real-time agent view** | WebSocket feed showing every agent action live |
-| **Application tracker** | Full history with status, scores, confirmation numbers |
+| **Application tracker** | Full history with status, match scores, and platform tracking |
+| **Graceful degradation** | All AI services fall back to realistic mock data when APIs are unavailable |
 | **Token authentication** | `X-User-Token` header — auto-injected by Axios interceptor |
 
 ---
@@ -64,8 +66,8 @@ AutoApply is an AI agent fleet that automates end-to-end job applications across
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  FRONTEND (Next.js 16 + Tailwind + NextAuth)             │
-│  OAuth Login · Resume Upload · Preferences               │
+│  FRONTEND (Next.js 16 + Tailwind)                        │
+│  Profile Setup · Resume Upload · Search Config           │
 │  Live Agent Feed · Match Cards · Voice Coach             │
 │  Application Dashboard                                   │
 └──────────────────────────┬───────────────────────────────┘
@@ -96,7 +98,7 @@ AutoApply is an AI agent fleet that automates end-to-end job applications across
 │  │  Live AI interviewer · Spoken feedback           │  │
 │  └───────────────────────────────────────────────────┘  │
 │                                                          │
-│  PostgreSQL · S3 (resumes) · In-memory queue            │
+│  S3 (resumes) · In-memory store (dev) · PostgreSQL (prod)│
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -106,9 +108,9 @@ AutoApply is an AI agent fleet that automates end-to-end job applications across
 
 | Service | Purpose |
 |---|---|
-| **Amazon Nova Act** | Browser automation — job search and form submission |
-| **Amazon Nova 2 Lite** | Resume parsing, job matching, cover letters |
-| **Amazon Nova 2 Sonic** | Bidirectional voice interview coaching |
+| **Amazon Nova Act** | Browser automation — job search, extraction, and form submission across multiple platforms |
+| **Amazon Nova 2 Lite** | Resume parsing (34+ skills extracted), job matching (0-100 scores), cover letter generation |
+| **Amazon Nova 2 Sonic** | Bidirectional voice interview coaching — real-time speech AI with job-tailored questions |
 | **Amazon Bedrock** | Inference API for Nova 2 Lite and Nova 2 Sonic |
 | **Amazon S3** | Resume and cover letter storage |
 
@@ -121,7 +123,6 @@ AutoApply is an AI agent fleet that automates end-to-end job applications across
 - Node.js 18+
 - Nova Act API key → [nova.amazon.com](https://nova.amazon.com)
 - AWS credentials with Bedrock access to `us.amazon.nova-2-lite-v1:0` and `us.amazon.nova-sonic-v1:0`
-- (Optional) OAuth app credentials for social login
 
 ### Backend
 
@@ -149,12 +150,6 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=<run: openssl rand -base64 32>
 
-# Add any OAuth providers you have credentials for:
-# GOOGLE_CLIENT_ID=...       GOOGLE_CLIENT_SECRET=...
-# FACEBOOK_APP_ID=...        FACEBOOK_APP_SECRET=...
-# AMAZON_CLIENT_ID=...       AMAZON_CLIENT_SECRET=...
-# APPLE_ID=...  APPLE_TEAM_ID=...  APPLE_KEY_ID=...  APPLE_PRIVATE_KEY=...
-
 npm run dev
 ```
 
@@ -162,63 +157,12 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ### No API keys? No problem.
 
-All three AI services fall back to realistic mock data:
-- **Nova Act** → returns Nigerian-market mock job listings (Jobberman / RemoteAfrica salary ranges)
-- **Nova 2 Lite** → returns a default match structure with `match_score: 50`
-- **Nova 2 Sonic** → plays a mock voice session with pre-written Q&A
+All three AI services degrade gracefully with realistic fallbacks:
+- **Nova Act** → returns Nigerian-market mock job listings with realistic companies and Naira salary ranges
+- **Nova 2 Lite** → regex-based resume parser extracts skills and experience; keyword-overlap match scoring
+- **Nova 2 Sonic** → interactive text-based mock interview with job-tailored questions and coaching tips
 
 The full UI works end-to-end with zero credentials configured.
-
----
-
-## Project Structure
-
-```
-autoapply/
-├── backend/
-│   ├── main.py                     # FastAPI app, routes, lifespan
-│   ├── config.py                   # pydantic-settings from .env
-│   ├── agents/
-│   │   ├── job_searcher.py         # Nova Act — parallel job search
-│   │   └── application_agent.py    # Nova Act — form filling + submission
-│   ├── services/
-│   │   ├── resume_parser.py        # PDF → Nova 2 Lite structured data
-│   │   ├── job_matcher.py          # Match scoring, gap coaching, cover letters
-│   │   ├── orchestrator.py         # Full pipeline coordinator
-│   │   ├── voice_service.py        # Nova 2 Sonic bidirectional streaming
-│   │   └── s3_service.py           # S3 resume storage with local fallback
-│   ├── api/
-│   │   ├── websocket_manager.py    # Real-time WebSocket event bus
-│   │   └── routes/
-│   │       ├── users.py            # User CRUD, resume upload, token auth
-│   │       ├── jobs.py             # Search, apply, match analysis
-│   │       └── voice.py            # Nova 2 Sonic WebSocket endpoint
-│   └── db/
-│       └── models.py               # SQLAlchemy models
-├── frontend/
-│   └── src/
-│       ├── app/
-│       │   ├── layout.tsx          # SessionProvider wrapper
-│       │   ├── page.tsx            # Main dashboard
-│       │   └── api/auth/[...nextauth]/route.ts
-│       ├── components/
-│       │   ├── agent/
-│       │   │   ├── AgentFeed.tsx
-│       │   │   ├── HumanEscalation.tsx
-│       │   │   └── VoiceCoach.tsx  # Nova 2 Sonic voice UI
-│       │   └── dashboard/
-│       │       ├── ProfileSetup.tsx  # Social login buttons + form
-│       │       ├── JobCard.tsx
-│       │       └── ...
-│       ├── lib/
-│       │   ├── api.ts              # Axios client + auth interceptor
-│       │   └── auth.config.ts      # NextAuth provider config
-│       └── types/
-│           └── index.ts
-└── docs/
-    ├── blog-post.md                # builder.aws.com submission
-    └── demo-script.md              # 3-minute demo video script
-```
 
 ---
 
@@ -226,18 +170,17 @@ autoapply/
 
 **Atomic `act()` calls** for reliability:
 ```python
-nova.act("Find and click the 'Apply' button")
-nova.act(f"Fill the name field with '{name}'")
-nova.act("Check if there is a cover letter text field")
+nova.act("Find the job search bar and type 'Software Engineer' then press Enter")
+nova.act("Find the location filter field and set it to 'Lagos, Nigeria'")
 ```
 
-**Pydantic schema extraction** for typed output:
+**JSON schema extraction** for structured output:
 ```python
 result = nova.act(
-    "Extract job title, company, location, requirements for the first 10 listings",
-    schema=JobResults.model_json_schema()
+    "Read the visible job listing cards and extract job title, company, location "
+    "for the first 5 listings. Do NOT click on any job.",
+    schema=SIMPLE_EXTRACTION_SCHEMA,
 )
-jobs = JobResults.model_validate_json(result.parsed_response)
 ```
 
 **Playwright interop** for reliable file uploads:
@@ -245,7 +188,7 @@ jobs = JobResults.model_validate_json(result.parsed_response)
 nova.page.set_input_files('input[type="file"]', resume_path)
 ```
 
-**Human escalation** via devtools URL:
+**Human escalation** when CAPTCHAs are detected:
 ```python
 if captcha_detected:
     return {"requires_human": True, "devtools_url": nova.devtools_frontend_url}
@@ -274,12 +217,38 @@ stream = bedrock.invoke_model_with_bidirectional_stream(
 **Frontend audio pipeline** (16kHz PCM ↔ AudioContext):
 ```typescript
 const source = ctx.createMediaStreamSource(stream);
-const processor = ctx.createScriptProcessor(512, 1, 1);
+const processor = ctx.createScriptProcessor(4096, 1, 1);
 processor.onaudioprocess = (e) => {
   const chunk = encodeChunk(e.inputBuffer.getChannelData(0));
   ws.send(JSON.stringify({ type: 'audio', data: chunk }));
 };
 ```
+
+**Interactive interview flow** with silence detection:
+```python
+async def _wait_for_user_speech(audio_in, timeout_seconds=20):
+    # Detects when user starts and stops speaking
+    # Auto-advances after silence to keep interview flowing
+```
+
+---
+
+## Design Decisions
+
+### Graceful Degradation
+Every AI service in AutoApply has a built-in fallback:
+- If Nova Act hits a CAPTCHA → escalates to the user instead of bypassing security
+- If Bedrock is throttled → uses keyword-overlap matching and template cover letters
+- If Nova Sonic SDK isn't available → runs an interactive text-based mock interview
+- If no API keys are configured → full demo mode with realistic mock data
+
+This ensures the application always works and demonstrates responsible AI design.
+
+### Human-in-the-Loop
+AutoApply never submits a job application without user awareness:
+- **Dry-run mode** (default ON) fills forms but doesn't click submit
+- **Review-before-submit** lets users approve each application
+- **CAPTCHA escalation** hands control back to the user rather than attempting to bypass security measures
 
 ---
 
@@ -287,10 +256,10 @@ processor.onaudioprocess = (e) => {
 
 - All user-facing routes require `X-User-Token` header (generated on account creation via `secrets.token_urlsafe(32)`)
 - Token is stored in `localStorage` and auto-injected by the Axios request interceptor
-- OAuth flow (NextAuth) auto-creates the backend user and stores the token in an encrypted JWT cookie
 - Resume upload restricted to PDF, max 10 MB
 - File system paths never returned to clients
 - `dry_run: true` default prevents accidental live submissions
+- AWS credentials never exposed to the frontend
 
 ---
 
