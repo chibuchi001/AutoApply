@@ -32,20 +32,21 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins_list(self) -> List[str]:
-        origins = [o.strip() for o in self.cors_origins.split(",")]
-        # In development, also allow common local dev URLs
-        if self.app_env == "development":
-            dev_origins = [
-                "http://localhost:3000",
-                "http://localhost:3001",
-                "http://localhost:4000",
-                "http://127.0.0.1:3000",
-                "http://127.0.0.1:3001",
-                "http://127.0.0.1:4000",
-            ]
-            for o in dev_origins:
-                if o not in origins:
-                    origins.append(o)
+        origins = [o.strip() for o in self.cors_origins.split(",") if o.strip()]
+        # Always include common origins
+        always_allow = [
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "http://localhost:4000",
+            "http://127.0.0.1:3000",
+            "http://127.0.0.1:3001",
+            "http://127.0.0.1:4000",
+            "https://auto-apply-beta.vercel.app",
+            "https://autoapply-jza8.onrender.com",
+        ]
+        for o in always_allow:
+            if o not in origins:
+                origins.append(o)
         return origins
 
 
