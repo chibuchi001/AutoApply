@@ -25,6 +25,10 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
     SKIP_PATHS = {"/health", "/docs", "/openapi.json", "/redoc"}
 
     async def dispatch(self, request: Request, call_next) -> Response:
+        # Let CORS middleware handle OPTIONS preflight directly
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         if request.url.path in self.SKIP_PATHS:
             return await call_next(request)
 

@@ -14,6 +14,9 @@ logger = logging.getLogger("autoapply.errors")
 
 class ErrorHandlerMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
+        # Let CORS middleware handle OPTIONS preflight directly
+        if request.method == "OPTIONS":
+            return await call_next(request)
         try:
             return await call_next(request)
         except Exception as exc:
